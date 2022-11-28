@@ -154,11 +154,10 @@
     <script src="controller/ViewController.js"></script>
     <script>
         $("#btnUpdate").click(function (){
-            var userID = $("#txtUserId").val();
-            var userName = $("#txtUserName").val();
+            
             var userOb={
-            userID:userID,
-            userName:userName,
+            userID:$("#txtUserId").val(),
+            userName:$("#txtUserName").val(),
             address:$("#txtUserAddress").val(),
             email:$("#txtEmail").val(),
             contact:$("#txtContact").val(),
@@ -166,16 +165,16 @@
         }
             $.ajax({
           url:"updateuser",
-          method:"PUT",
+          method:"POST",
 //          contentType:"application/json", //request content type json
-          data:"userID=" + userOb.userID + "&userName=" + userOb.userName , //convert valid query String
+          data:"userID=" + userOb.userID + "&" + "userName="+ userOb.userName + "&" + "address="+ userOb.address + "&" + "email="+ userOb.email + "&" + "contact="+ userOb.contact + "&" + "password="+ userOb.password, //convert valid query String
           success:function (res){
               /*console.log(res);*/
               if (res.status==="200"){
                   swal("Successfully Update the User!", "You clicked the button!", "success");
                   //alert(res.message);
                   loadAllUsers();
-              }else if (res.status===400){
+              }else if (res.status==="400"){
                   swal("Failed to Update the User!", "You clicked the button!", "error");
                   ///alert(res.message);
 

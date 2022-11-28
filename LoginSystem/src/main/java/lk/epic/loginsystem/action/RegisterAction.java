@@ -45,57 +45,36 @@ public class RegisterAction extends ActionSupport {
         HttpServletResponse response = ServletActionContext.getResponse();
         HttpServletRequest request = ServletActionContext.getRequest();
         
-        System.out.println("Awoooooooooooooooo");
-        //return SUCCESS;
-        
-//        boolean register = false;
+              
         LocalDateTime time = LocalDateTime.now();  
         DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");  
         String formatDateTime = time.format(format);   
-        String s="sa";
-        System.out.println(formatDateTime);
-//          Registration registration = new Registration(
-//                  request.getParameter("userID"),
-//                  request.getParameter("userName"),
-//                  request.getParameter("address"),
-//                  request.getParameter("email"),
-//                  request.getParameter("contact"),
-//                  request.getParameter("password"),
-//                  formatDateTime,
-//                  s
-//          );
-Registration registration = new Registration(
-                  "userID",
-                  "userName",
-                  "address",
-                  "email",
-                  "contact",
-                 "password",
-                  "formatDateTime",
-                  "s"
+        String s="sa";        
+          Registration registration = new Registration(
+                  request.getParameter("userID"),
+                  request.getParameter("userName"),
+                  request.getParameter("address"),
+                  request.getParameter("email"),
+                  request.getParameter("contact"),
+                  request.getParameter("password"),
+                  formatDateTime,
+                  s
           );
-          SessionFactory factory = HibernateListener.getFactory();
 
-        Session openSession = factory.openSession();
-        Transaction beginTransaction = openSession.beginTransaction();
-            openSession.save(registration);
-            beginTransaction.commit();
-            openSession.close();
-//          register = registrationDao.registerUser(registration);
-//          
-//          if(register){                      
-//              result.put("status", "200");
-//              return SUCCESS;
-//          }else{
-//              result.put("status", "400");
+                    
+          if(registrationDao.registerUser(registration)){                      
+              result.put("status", "200");
               return SUCCESS;
-//          }
+          }else{
+              result.put("status", "400");
+              return SUCCESS;
+          }
     }
     
     public String getAllUser() throws SQLException, ClassNotFoundException{
 //        Map<String, List> data = new HashMap<String, List>();
         ArrayList<Registration> details = registrationDao.report();
-        
+        System.out.println(details);
         HttpServletResponse response = ServletActionContext.getResponse();
         HttpServletRequest request = ServletActionContext.getRequest();
         

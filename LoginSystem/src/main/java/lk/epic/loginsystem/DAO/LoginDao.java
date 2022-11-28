@@ -9,7 +9,15 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import lk.epic.loginsystem.Entity.Registration;
 import lk.epic.loginsystem.db.DbConnection;
+import lk.epic.loginsystem.listener.HibernateListener;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.query.NativeQuery;
+import org.hibernate.query.Query;
 
 /**
  *
@@ -18,16 +26,21 @@ import lk.epic.loginsystem.db.DbConnection;
 public class LoginDao {
     
     public boolean checkEqualityUser(String userName, String password) throws ClassNotFoundException, SQLException{
-        DbConnection dbConnection = new DbConnection();
-        Connection connection = dbConnection.getConnection();
-        PreparedStatement pstm = connection.prepareStatement("select * from Registration where userName=? && password=?");
-        pstm.setObject(1, userName);
-        pstm.setObject(2, password);
-        ResultSet rst = pstm.executeQuery();
-        if (rst.next()){
+        List<Registration> list = new ArrayList();
+        SessionFactory factory = HibernateListener.getFactory();
+
+        Session openSession = factory.openSession();
+        System.out.println("open");
+        Query createQuery = openSession.createQuery("from Registration where userName=:userName and password=:password");
+        System.out.println("hi");
+        createQuery.setParameter("userName", userName);
+        createQuery.setParameter("password", password);
+        System.out.println("hello");
+        Registration registration = (Registration) createQuery.uniqueResult();
+        if(registration != null){
+         
             return true;
-        }else{
-            return false;
         }
+        return false;
     }
 }

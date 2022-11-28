@@ -19,7 +19,7 @@
         
         <action name="registeruser" class="lk.epic.loginsystem.action.RegisterAction" method="execute">
             <result  type="json">
-                <param name="root"></param>
+                <param name="root">result</param>
                 
             </result>
         </action>
@@ -38,7 +38,7 @@
         
         <action name="updateuser" class="lk.epic.loginsystem.action.RegisterAction" method="updateUser">
             <result name="success" type="json">
-                <param name="root"></param>           
+                <param name="root">result</param>           
             </result>
         </action>
         
