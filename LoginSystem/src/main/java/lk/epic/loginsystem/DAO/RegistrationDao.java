@@ -12,6 +12,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import lk.epic.loginsystem.Entity.Registration;
 import lk.epic.loginsystem.db.DbConnection;
+import lk.epic.loginsystem.listener.HibernateListener;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 
 /**
  *
@@ -22,21 +26,29 @@ public class RegistrationDao {
     DbConnection dbConnection = new DbConnection();
     
     public boolean registerUser(Registration registration) throws ClassNotFoundException, SQLException{
-        Connection connection = dbConnection.getConnection();
-        PreparedStatement pstm = connection.prepareStatement("insert into Registration values(?,?,?,?,?,?,?,?)");
-        pstm.setObject(1, registration.getUserID());
-        pstm.setObject(2, registration.getUserName());
-        pstm.setObject(3, registration.getAddress());
-        pstm.setObject(4, registration.getEmail());
-        pstm.setObject(5, registration.getContact());
-        pstm.setObject(6, registration.getPassword());
-        pstm.setObject(7, registration.getCreateTime());
-        pstm.setObject(8, registration.getLastUpdateTime());
-        if(pstm.executeUpdate()>0){
+          SessionFactory factory = HibernateListener.getFactory();
+
+        Session openSession = factory.openSession();
+        Transaction beginTransaction = openSession.beginTransaction();
+            openSession.save(registration);
+            beginTransaction.commit();
+            openSession.close();
+
+//        Connection connection = dbConnection.getConnection();
+//        PreparedStatement pstm = connection.prepareStatement("insert into Registration values(?,?,?,?,?,?,?,?)");
+//        pstm.setObject(1, registration.getUserID());
+//        pstm.setObject(2, registration.getUserName());
+//        pstm.setObject(3, registration.getAddress());
+//        pstm.setObject(4, registration.getEmail());
+//        pstm.setObject(5, registration.getContact());
+//        pstm.setObject(6, registration.getPassword());
+//        pstm.setObject(7, registration.getCreateTime());
+//        pstm.setObject(8, registration.getLastUpdateTime());
+//        if(pstm.executeUpdate()>0){
             return true;
-        }else{
-            return false;
-        }
+//        }else{
+//            return false;
+//        }
     }
     
     public ArrayList<Registration> report() throws SQLException, ClassNotFoundException{

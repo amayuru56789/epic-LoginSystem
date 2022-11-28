@@ -16,7 +16,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lk.epic.loginsystem.DAO.RegistrationDao;
 import lk.epic.loginsystem.Entity.Registration;
+import lk.epic.loginsystem.listener.HibernateListener;
 import org.apache.struts2.ServletActionContext;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 
 /**
  *
@@ -42,13 +46,14 @@ public class RegisterAction extends ActionSupport {
         HttpServletRequest request = ServletActionContext.getRequest();
         
         System.out.println("Awoooooooooooooooo");
-        return SUCCESS;
+        //return SUCCESS;
         
 //        boolean register = false;
-//        LocalDateTime time = LocalDateTime.now();  
-//        DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");  
-//        String formatDateTime = time.format(format);   
-//        String s="sa";
+        LocalDateTime time = LocalDateTime.now();  
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");  
+        String formatDateTime = time.format(format);   
+        String s="sa";
+        System.out.println(formatDateTime);
 //          Registration registration = new Registration(
 //                  request.getParameter("userID"),
 //                  request.getParameter("userName"),
@@ -59,6 +64,23 @@ public class RegisterAction extends ActionSupport {
 //                  formatDateTime,
 //                  s
 //          );
+Registration registration = new Registration(
+                  "userID",
+                  "userName",
+                  "address",
+                  "email",
+                  "contact",
+                 "password",
+                  "formatDateTime",
+                  "s"
+          );
+          SessionFactory factory = HibernateListener.getFactory();
+
+        Session openSession = factory.openSession();
+        Transaction beginTransaction = openSession.beginTransaction();
+            openSession.save(registration);
+            beginTransaction.commit();
+            openSession.close();
 //          register = registrationDao.registerUser(registration);
 //          
 //          if(register){                      
@@ -66,7 +88,7 @@ public class RegisterAction extends ActionSupport {
 //              return SUCCESS;
 //          }else{
 //              result.put("status", "400");
-//              return SUCCESS;
+              return SUCCESS;
 //          }
     }
     

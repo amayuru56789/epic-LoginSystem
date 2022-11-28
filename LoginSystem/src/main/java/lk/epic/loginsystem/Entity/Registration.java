@@ -5,12 +5,19 @@
  */
 package lk.epic.loginsystem.Entity;
 
+import java.io.Serializable;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+
 /**
  *
  * @author Amayuru indeewara
  */
-public class Registration {
+@Entity
+public class Registration implements Serializable{
     
+  @Id
     private String userID;
     private String userName;
     private String address;
